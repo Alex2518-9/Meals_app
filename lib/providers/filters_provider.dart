@@ -3,14 +3,14 @@ import 'package:meals/providers/meals_provider.dart';
 
 enum Filter { glutenFree, lactoseFree, vegan, vegetarian }
 
-class FiltersNotifier extends StateNotifier<Map<Filter, bool>> {
-  FiltersNotifier()
-    : super({
-        Filter.glutenFree: false,
-        Filter.lactoseFree: false,
-        Filter.vegan: false,
-        Filter.vegetarian: false,
-      });
+class FiltersNotifier extends Notifier<Map<Filter, bool>> {
+  @override
+  Map<Filter, bool> build() => {
+    Filter.glutenFree: false,
+    Filter.lactoseFree: false,
+    Filter.vegan: false,
+    Filter.vegetarian: false,
+  };
 
   void setFilters(Map<Filter, bool> updatedFilters) {
     state = updatedFilters;
@@ -21,10 +21,9 @@ class FiltersNotifier extends StateNotifier<Map<Filter, bool>> {
   }
 }
 
-final filtersProvider =
-    StateNotifierProvider<FiltersNotifier, Map<Filter, bool>>(
-      (ref) => FiltersNotifier(),
-    );
+final filtersProvider = NotifierProvider<FiltersNotifier, Map<Filter, bool>>(
+  FiltersNotifier.new,
+);
 
 final filteredMealsProvider = Provider((ref) {
   final meals = ref.watch(mealsProvider);
